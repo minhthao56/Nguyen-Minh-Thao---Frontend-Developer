@@ -1,3 +1,11 @@
+import Banner from "../components/Banner";
+import RocketCard from "../components/RocketCard";
+
 export default function HomePage() {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <Banner />
+      <RocketCard />
+    </>
+  );
 }

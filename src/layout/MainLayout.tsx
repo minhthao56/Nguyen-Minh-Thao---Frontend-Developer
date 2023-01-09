@@ -4,7 +4,6 @@ const MainLayout = () => {
   return (
     <>
       <Header />
-      <br />
       <Outlet />
     </>
   );
