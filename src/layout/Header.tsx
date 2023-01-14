@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
+import PrimaryButton from "../components/PrimaryButton";
 
 export default function Header() {
   return (
@@ -26,18 +28,16 @@ export default function Header() {
             </a>
           </nav>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <a
-              href="/"
-              className="whitespace-nowrap text-base font-medium text-white"
-            >
-              Sign in
-            </a>
-            <a
-              href="/"
-              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-black shadow-sm"
-            >
-              Sign up
-            </a>
+            <Link to={"/register"}>
+              <PrimaryButton type="button" className="w-40">
+                Sign in
+              </PrimaryButton>
+            </Link>
+            <Link to={"/login"}>
+              <PrimaryButton color="white" type="button" className="w-40">
+                Login
+              </PrimaryButton>
+            </Link>
           </div>
         </div>
       </div>
