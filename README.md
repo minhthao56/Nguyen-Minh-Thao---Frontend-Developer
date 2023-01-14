@@ -1,8 +1,9 @@
 # About app
 
 Using api v4: https://github.com/r-spacex/SpaceX-API/tree/master/docs#rspacex-api-docs (Because the v3 got error now )
-BE: Use Node JS to build auth ap
-FE: Use React JS
+
+1. BE: Use Node JS to build auth ap
+2. FE: Use React JS
 
 # How to start app
 
