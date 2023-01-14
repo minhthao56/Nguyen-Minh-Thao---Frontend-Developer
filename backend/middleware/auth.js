@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET } = require("../constants/app");
 
 const verifyJWT = function (req, res, next) {
-  if (req.path !== "/register") {
+  if (req.path !== "/login" && req.path !== "/register") {
     const authorization = req.headers.authorization;
     let token = "";
 
@@ -19,11 +19,16 @@ const verifyJWT = function (req, res, next) {
       if (err) {
         return res.status(403).json({ error: JSON.stringify(err) });
       }
-
-      console.log("---decode---", decode);
+      req.email = decode.email;
     });
+
+    if (!token || token === "null") {
+      return res.status(403).json({ error: "Invalid token" });
+    }
+    next();
+  } else {
+    next();
   }
-  next();
 };
 
 module.exports = {

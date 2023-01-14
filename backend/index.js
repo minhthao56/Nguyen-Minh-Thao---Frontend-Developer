@@ -43,8 +43,6 @@ app.post("/register", async (req, res) => {
 // Login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log({ email });
-  console.log({ password });
 
   try {
     const oldUser = db.getOneByEmail(email);
@@ -67,12 +65,26 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/whoiam", (req, res) => {
-  // our login logic goes here
+  const email = req.email;
+  const user = db.getOneByEmail(email);
+  res.status(200).json(user);
 });
 
 app.get("/rockets", async (req, res) => {
+  const query = req.query;
   try {
     const rockets = await axios.get("https://api.spacexdata.com/v4/rockets");
+
+    if (query.search !== "") {
+      const results = [];
+      for (let rocket of rockets.data) {
+        const name = rocket.name.toLocaleLowerCase();
+        if (name.includes(query.search.toLocaleLowerCase())) {
+          results.push(rocket);
+        }
+      }
+      return res.status(200).json(results);
+    }
     res.status(200).json(rockets.data);
   } catch (error) {
     res.status(500).json({ error: JSON.stringify(error) });
