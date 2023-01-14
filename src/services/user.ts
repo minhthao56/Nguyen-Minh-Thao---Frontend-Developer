@@ -1,18 +1,14 @@
 import { FormAuthProps } from "../types/user";
 import axiosClient from "./axiosClient";
 
-interface AuthResp {
+export interface AuthResp {
   email: string;
   token: string;
 }
 
 export const apiUser = {
-  whoiam: (email: string) => {
-    return axiosClient.get("/whoiam", {
-      params: {
-        email,
-      },
-    });
+  whoiam: () => {
+    return axiosClient.get<any, AuthResp>("/whoiam");
   },
 
   register: async (user: FormAuthProps) => {

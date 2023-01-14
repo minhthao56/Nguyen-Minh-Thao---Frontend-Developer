@@ -1,16 +1,31 @@
 import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
 
-export default function FormFilter() {
+interface FormFilterProps {
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onSearch?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function FormFilter({
+  value,
+  onChange,
+  onSearch,
+}: FormFilterProps) {
   return (
     <div className="m-4">
-      <h1 className="text-2xl uppercase mb-6">Filter SpaceX</h1>
-      <form className=" grid grid-cols-2 gap-4 rounded-md bg-white p-6">
-        <Input type="text" placeholder="Filter 1" />
-        <Input type="text" placeholder="Filter 1" />
-        <Input type="text" placeholder="Filter 1" />
-        <PrimaryButton type="submit">Search</PrimaryButton>
-      </form>
+      <h1 className="text-2xl uppercase mb-6">Search SpaceX</h1>
+      <div className="flex">
+        <Input
+          type="text"
+          placeholder="Search By Name"
+          value={value}
+          onChange={onChange}
+        />
+        <PrimaryButton type="submit" className="ml-5" onClick={onSearch}>
+          Search
+        </PrimaryButton>
+      </div>
     </div>
   );
 }

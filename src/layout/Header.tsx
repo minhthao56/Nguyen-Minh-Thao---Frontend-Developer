@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 import PrimaryButton from "../components/PrimaryButton";
+import { useWhoIAmContext } from "../contexts/WhoIAmContext";
 
 export default function Header() {
+  const { email } = useWhoIAmContext();
+
   return (
     <div className="relative bg-black">
       <div className="mx-auto max-w-7xl px-6">
@@ -13,31 +16,35 @@ export default function Header() {
               <img className="h-8 w-auto sm:h-10" src={Logo} alt="logo" />
             </a>
           </div>
-          <nav className="hidden space-x-10 md:flex">
-            <a
-              href="/"
-              className="text-base font-medium text-white hover:text-gray-900"
-            >
-              Pricing
-            </a>
-            <a
-              href="/"
-              className="text-base font-medium text-white hover:text-gray-900"
-            >
-              Docs
-            </a>
-          </nav>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <Link to={"/register"}>
-              <PrimaryButton type="button" className="w-40">
-                Sign in
-              </PrimaryButton>
-            </Link>
-            <Link to={"/login"}>
-              <PrimaryButton color="white" type="button" className="w-40">
-                Login
-              </PrimaryButton>
-            </Link>
+            {email ? (
+              <>
+                <span className="text-white">{email}</span>
+                <PrimaryButton
+                  type="button"
+                  className="w-14 ml-8"
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.assign("login");
+                  }}
+                >
+                  Logout
+                </PrimaryButton>
+              </>
+            ) : (
+              <>
+                <Link to={"/register"}>
+                  <PrimaryButton type="button" className="w-40">
+                    Sign in
+                  </PrimaryButton>
+                </Link>
+                <Link to={"/login"}>
+                  <PrimaryButton type="button" className="w-40">
+                    Login
+                  </PrimaryButton>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
