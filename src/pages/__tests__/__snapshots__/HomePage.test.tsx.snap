@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuthPage/> should match to snapshot 1`] = `
+<div>
+  <div
+    class="container m-auto pt-10"
+  >
+    <h1
+      class="text-center text-2xl mb-10 uppercase"
+    >
+      Login
+    </h1>
+    <form
+      class="max-w-screen-md  m-auto"
+    >
+      <input
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:black block w-full p-2.5 mb-4"
+        name="email"
+        placeholder="Your Email"
+        type="email"
+      />
+      <input
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:black block w-full p-2.5 mb-6"
+        name="password"
+        placeholder="Your Password"
+        type="password"
+      />
+      <button
+        class="text-white bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center undefined"
+        type="submit"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+`;

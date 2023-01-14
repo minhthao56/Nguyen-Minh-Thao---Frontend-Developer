@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PrimaryButton/> should match to snapshot with black 1`] = `
+<div>
+  <button
+    class="text-white bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center undefined"
+    type="submit"
+  >
+    Name
+  </button>
+</div>
+`;
+
+exports[`<PrimaryButton/> should match to snapshot with white 1`] = `
+<div>
+  <button
+    class="text-black bg-white focus:ring-4 focus:outline-none focus:ring-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center undefined"
+    type="submit"
+  >
+    Name
+  </button>
+</div>
+`;

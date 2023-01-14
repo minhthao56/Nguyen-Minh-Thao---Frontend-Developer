@@ -1,4 +1,4 @@
-interface RocketCardProps {
+export interface RocketCardProps {
   image?: string;
   description?: string;
   name?: string;
