@@ -1,12 +1,12 @@
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+
 const axiosClient = axios.create({
-  baseURL: "https://localhost.com:3002",
+  baseURL: "http://localhost:3002",
   headers: {
     "content-type": "application/json",
-  },
-  params: {
-    language: "en-US",
+    authorization: `Bearer ${token}`,
   },
 });
 axiosClient.interceptors.response.use(

@@ -4,31 +4,29 @@ const app = express();
 const db = require("./database/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const { verifyJWT } = require("./middleware/auth");
 const { PORT, SECRET } = require("./constants/app");
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
-// app.use(verifyJWT);
+app.use(verifyJWT);
 
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      return res.status(400).json("All input is required");
     }
-    const oldUser = db.getOneByEmail({ email });
-
-    if (oldUser instanceof Error) {
-      return res.status(500).json({ error: "getOneByEmail-Error in BD" });
-    }
-
+    const oldUser = db.getOneByEmail(email);
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(409).json("User Already Exist. Please Login");
     }
+
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = db.createUser({
@@ -36,22 +34,39 @@ app.post("/register", async (req, res) => {
       password: encryptedPassword,
     });
 
-    if (user instanceof Error) {
-      return res.status(500).json({ error: "createUser-Error in BD" });
-    }
-    const token = jwt.sign({ user_id: user._id, email }, SECRET);
-    user.token = token;
-    res.status(201).json(user);
+    const token = jwt.sign({ email }, SECRET);
+    return res.status(201).json({ email: user.token, token });
   } catch (err) {
     return res.status(500).json({ error: JSON.stringify(err) });
   }
 });
 // Login
-app.post("/login", (req, res) => {
-  // our login logic goes here
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log({ email });
+  console.log({ password });
+
+  try {
+    const oldUser = db.getOneByEmail(email);
+    if (!oldUser) {
+      return res
+        .status(409, `The ${email} is not existed. Please Sign Up`)
+        .json(`The ${email} is not existed. Please Sign Up`);
+    }
+
+    const correctPassword = await bcrypt.compare(password, oldUser.password);
+
+    if (!correctPassword) return res.status(400).json("Password is incorrect");
+
+    const token = jwt.sign({ email }, SECRET);
+
+    return res.status(201).json({ email, token });
+  } catch (error) {
+    return res.status(500).json({ error: JSON.stringify(error) });
+  }
 });
 
-app.get("whoiam", (req, res) => {
+app.get("/whoiam", (req, res) => {
   // our login logic goes here
 });
 
