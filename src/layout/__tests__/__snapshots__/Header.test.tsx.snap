@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header/> should match to snapshot when having auth 1`] = `
+<div>
+  <div
+    class="relative bg-black"
+  >
+    <div
+      class="mx-auto max-w-7xl px-6"
+    >
+      <div
+        class="flex items-center justify-between py-6 md:justify-start md:space-x-10"
+      >
+        <div
+          class="flex justify-start lg:w-0 lg:flex-1"
+        >
+          <a
+            href="/"
+          >
+            <span
+              class="sr-only"
+            >
+              Your Company
+            </span>
+            <img
+              alt="logo"
+              class="h-8 w-auto sm:h-10"
+              src="logo.png"
+            />
+          </a>
+        </div>
+        <div
+          class="hidden items-center justify-end md:flex md:flex-1 lg:w-0"
+        >
+          <span
+            class="text-white"
+          >
+            123@gmail.com
+          </span>
+          <button
+            class="text-white bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center w-14 ml-8"
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Header/> should match to snapshot when non-auth 1`] = `
+<div>
+  <div
+    class="relative bg-black"
+  >
+    <div
+      class="mx-auto max-w-7xl px-6"
+    >
+      <div
+        class="flex items-center justify-between py-6 md:justify-start md:space-x-10"
+      >
+        <div
+          class="flex justify-start lg:w-0 lg:flex-1"
+        >
+          <a
+            href="/"
+          >
+            <span
+              class="sr-only"
+            >
+              Your Company
+            </span>
+            <img
+              alt="logo"
+              class="h-8 w-auto sm:h-10"
+              src="logo.png"
+            />
+          </a>
+        </div>
+        <div
+          class="hidden items-center justify-end md:flex md:flex-1 lg:w-0"
+        >
+          <a
+            href="/register"
+          >
+            <button
+              class="text-white bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center w-40"
+              type="button"
+            >
+              Sign in
+            </button>
+          </a>
+          <a
+            href="/login"
+          >
+            <button
+              class="text-white bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center w-40"
+              type="button"
+            >
+              Login
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
