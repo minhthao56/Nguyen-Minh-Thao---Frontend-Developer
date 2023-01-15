@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const { email } = useWhoIAmContext();
+
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["rockets", search],
     queryFn: async () => {

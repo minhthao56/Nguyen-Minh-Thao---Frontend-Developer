@@ -1,36 +1,50 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import AuthPage from "../AuthPage";
-import useDefinePage from "../../hooks/useDefinePage";
-
-import { useMutation } from "@tanstack/react-query";
+import HomePage from "../HomePage";
+import { useQuery } from "@tanstack/react-query";
 import userEvent from "@testing-library/user-event";
+import mockData from "../../services/rocket.json";
+import { useWhoIAmContext } from "../../contexts/WhoIAmContext";
+import { BrowserRouter } from "react-router-dom";
 
 jest.mock("@tanstack/react-query", () => {
   return {
     ...jest.requireActual("@tanstack/react-query"),
     useMutation: jest.fn(),
+    useQuery: jest.fn(),
   };
 });
-jest.mock("../../hooks/useDefinePage", () => jest.fn());
-jest.mock("../../services/user", () => {
+
+jest.mock("../../contexts/WhoIAmContext", () => {
   return {
-    apiUser: {
-      register: jest.fn(),
-      login: jest.fn(),
+    useWhoIAmContext: jest.fn(),
+  };
+});
+
+jest.mock("../../services/rocket", () => {
+  return {
+    apiRocket: {
+      getRockets: jest.fn(),
     },
   };
 });
 
-describe("<AuthPage/>", () => {
-  const mutateAsync = jest.fn();
+describe("<HomePage/>", () => {
+  const refetch = jest.fn();
 
   beforeEach(() => {
-    (useMutation as jest.Mock).mockReturnValue({ mutateAsync });
-    (useDefinePage as jest.Mock).mockReturnValue({ isLoginPage: true });
+    (useQuery as jest.Mock).mockReturnValue({
+      data: mockData,
+      refetch,
+    });
+    (useWhoIAmContext as jest.Mock).mockReturnValue({ email: "123@gmail.com" });
   });
 
   const renderComponent = () => {
-    return render(<AuthPage />);
+    return render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
   };
 
   it("should match to snapshot", () => {
@@ -38,40 +52,53 @@ describe("<AuthPage/>", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("schould call mutateAsync when submitting login", async () => {
-    mutateAsync.mockReturnValue({ token: "1234" });
+  it("should call refetch function", () => {
     renderComponent();
 
-    userEvent.type(
-      screen.getByPlaceholderText("Your Email"),
-      "minhthao5648@gmail.com"
-    );
+    userEvent.click(screen.getByRole("button", { name: "Search" }));
 
-    userEvent.type(screen.getByPlaceholderText("Your Password"), "124333");
+    expect(refetch).toBeCalled();
+  });
 
-    userEvent.click(screen.getByRole("button", { name: "Login" }));
+  it("should call useQuery hook when typing search", async () => {
+    renderComponent();
 
+    userEvent.type(screen.getByPlaceholderText("Search By Name"), "test");
     await waitFor(() => {
-      expect(mutateAsync).toBeCalled();
+      expect(useQuery).toBeCalled();
     });
   });
 
-  it("schould call mutateAsync when submitting sign up", async () => {
-    (useDefinePage as jest.Mock).mockReturnValue({ isLoginPage: false });
-    mutateAsync.mockReturnValue({ token: "1234" });
+  it("should show error message", () => {
+    (useQuery as jest.Mock).mockReturnValue({
+      isError: true,
+      error: new Error("Message error"),
+    });
+
     renderComponent();
 
-    userEvent.type(
-      screen.getByPlaceholderText("Your Email"),
-      "minhthao5648@gmail.com"
-    );
+    expect(
+      screen.getByText(JSON.stringify("Message error"))
+    ).toBeInTheDocument();
+  });
 
-    userEvent.type(screen.getByPlaceholderText("Your Password"), "124333");
-
-    userEvent.click(screen.getByRole("button", { name: "Register" }));
-
-    await waitFor(() => {
-      expect(mutateAsync).toBeCalled();
+  it("should show loading", () => {
+    (useQuery as jest.Mock).mockReturnValue({
+      isLoading: true,
     });
+
+    renderComponent();
+
+    expect(screen.getByTestId("Loading")).toBeInTheDocument();
+  });
+
+  it("should not display list rocket when non-auth", () => {
+    (useWhoIAmContext as jest.Mock).mockReturnValue({ email: "" });
+
+    const { container } = renderComponent();
+
+    expect(container).toMatchSnapshot();
+
+    expect(screen.getByText(/to see list rocket/)).toBeInTheDocument();
   });
 });
